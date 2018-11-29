@@ -7,54 +7,61 @@
 
 #include <ostream>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
 template<class T>
 class heap {
 private:
-    T* _heap;
+    vector<T> _heap;
 
     void heapify() {
-
+        make_heap(_heap.begin(),_heap.end());
     }
 
 public:
-    explicit heap(T* elements) {
-        _heap = elements;
+    heap(typename::vector<T>::const_iterator first, typename::vector<T>::const_iterator last) {
+        typename::vector<T>::const_iterator temp = first;
+        while(temp != last) {
+            _heap.emplace_back(*temp);
+            temp++;
+        }
+        heapify();
     }
 
     void push(T element) {
-        _heap++;
-        *_heap = element;
+        _heap.emplace_back(element);
+        heapify();
     }
 
     T pop() {
-        T root = *_heap;
-        *_heap = NULL;
-        _heap--;
+        T root = _heap.at(0);
+        _heap.erase(_heap.begin());
+        heapify();
         return root;
     }
 
     unsigned long size() {
         unsigned long size = 0;
-        for (T *p = _heap; p != end; ++p) {
-            size += sizeof(T);
+        for (T t : _heap) {
+            size += sizeof(t);
         }
         return size;
     }
 
     bool is_empty() {
-        return _heap; // non-null pointers are implicitly converted to true
+        return _heap.empty();
     }
 
     void clear() {
-        _heap = NULL;
+        _heap.erase(_heap.begin(), _heap.end());
     }
 
     friend ostream& operator << (ostream& os, const heap& h) {
-        for (T *p = h._heap; p != end; ++p) {
-            os << *p << " ";
+        for (T t : h._heap) {
+            os << t << " ";
         }
         os << endl;
         return os;
