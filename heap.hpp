@@ -6,6 +6,7 @@
 #define HEAP_HEAP_HPP
 
 #include <ostream>
+#include <iostream>
 
 using namespace std;
 
@@ -30,23 +31,32 @@ public:
 
     T pop() {
         T root = *_heap;
+        *_heap = NULL;
         _heap--;
         return root;
     }
 
     unsigned long size() {
-        return 0;
+        unsigned long size = 0;
+        for (T *p = _heap; p != end; ++p) {
+            size += sizeof(T);
+        }
+        return size;
     }
 
     bool is_empty() {
-        return false;
+        return _heap; // non-null pointers are implicitly converted to true
     }
 
     void clear() {
-
+        _heap = NULL;
     }
 
     friend ostream& operator << (ostream& os, const heap& h) {
+        for (T *p = h._heap; p != end; ++p) {
+            os << *p << " ";
+        }
+        os << endl;
         return os;
     }
 };
