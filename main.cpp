@@ -2,6 +2,7 @@
 #include <vector>
 #include "heap.hpp"
 
+// uses the Memento design pattern
 int main() {
 
     vector<int> v = {5, 8, 10, 9, 1, 2, 11};
