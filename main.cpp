@@ -4,16 +4,20 @@
 
 int main() {
 
-    vector<int> v = {5, 8, 10, 9, 1, 2};
-    heap<int> h{v.begin(), v.end()};
+    vector<int> v = {5, 8, 10, 9, 1, 2, 11};
+    heap<int, vector<int>::iterator> h{v.begin(), v.end()};
+    cout << "Original heap: " << h << endl;
+    heap<int, vector<int>::iterator>::memento m{h};
     h.push(6);
-    cout << h.pop() << endl;
-    cout << h << endl;
-    cout << h.size() << endl;
-    cout << h.is_empty() << endl;
+    cout << "Pushed 6, popping " << h.pop() << endl;
+    cout << "New heap: " << h << endl;
+    cout << "Heap size: " << h.size() << endl;
+    cout << "Is the heap empty? " << h.is_empty() << endl;
     h.clear();
-    cout << h.is_empty() << endl;
-
+    cout << "Cleared!" << endl;
+    cout << "Is the heap empty? " << h.is_empty() << endl;
+    h.reinstate_memento(&m);
+    cout << "Memento of original heap: " << h << endl;
 
     return 0;
 }
